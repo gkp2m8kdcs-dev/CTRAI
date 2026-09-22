@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0B10" />
+  <title>CTRAI — Private Personal Finance for iPhone</title>
+  <meta name="description" content="CTRAI is a privacy-first personal finance and wealth navigator for iPhone. Track accounts, budgets, goals and insights — all stored locally on your device." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230A0B10'/><text x='32' y='40' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-size='18' font-weight='800' fill='%2349D6BE'>CTRAI</text></svg>" />
+  <style>
+    :root {
+      --bg: #0A0B10;
+      --surface: #121421;
+      --surface-2: #181A2B;
+      --stroke: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.96);
+      --text-2: rgba(255,255,255,0.66);
+      --text-3: rgba(255,255,255,0.40);
+      --accent: #49D6BE;
+      --accent-deep: #2A9C8A;
+      --warning: #FFBD2E;
+      --danger: #FF5B67;
+      --success: #5BDC7C;
+      --info: #5BAAFF;
+      --purple: #B07BFF;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Top nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(180%) blur(18px);
+      -webkit-backdrop-filter: saturate(180%) blur(18px);
+      background: rgba(10,11,16,0.72);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .brand .dot {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #00120F;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+    }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { color: var(--text-2); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-cta {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #00120F !important;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .nav-cta:hover { text-decoration: none; opacity: 0.92; }
+    @media (max-width: 720px) {
+      .nav-links a:not(.cta) { display: none; }
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 88px 0 64px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -200px -200px auto auto;
+      width: 720px; height: 720px;
+      background: radial-gradient(closest-side, rgba(73,214,190,0.28), transparent 70%);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto auto -300px -200px;
+      width: 680px; height: 680px;
+      background: radial-gradient(closest-side, rgba(91,170,255,0.18), transparent 70%);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(73,214,190,0.10);
+      border: 1px solid rgba(73,214,190,0.30);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    .eyebrow .pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 0 rgba(73,214,190,0.6);
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(73,214,190,0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(73,214,190,0); }
+      100% { box-shadow: 0 0 0 0 rgba(73,214,190,0); }
+    }
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 64px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 18px 0 18px;
+      font-weight: 800;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(90deg, var(--accent), #8AE5FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p.lead {
+      font-size: clamp(16px, 1.6vw, 19px);
+      color: var(--text-2);
+      max-width: 640px;
+      margin: 0 0 28px;
+    }
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+    .btn-primary { background: var(--accent); color: #00120F; }
+    .btn-primary:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--stroke); }
+    .btn-ghost:hover { text-decoration: none; background: var(--surface); }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    /* Phone mock */
+    .phone {
+      position: relative;
+      width: 320px;
+      height: 660px;
+      margin: 0 auto;
+      border-radius: 44px;
+      background: linear-gradient(160deg, #1a1c2c, #0c0d15);
+      padding: 14px;
+      box-shadow:
+        0 50px 100px -20px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      top: 22px; left: 50%;
+      transform: translateX(-50%);
+      width: 110px; height: 30px;
+      background: #000;
+      border-radius: 16px;
+      z-index: 2;
+    }
+    .screen {
+      width: 100%; height: 100%;
+      border-radius: 32px;
+      background: #0A0B10;
+      overflow: hidden;
+      position: relative;
+    }
+    .screen .topbar {
+      padding: 56px 18px 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px;
+      color: var(--text-2);
+    }
+    .screen .brand-tag {
+      letter-spacing: 2px; font-weight: 800; color: var(--text);
+    }
+    .screen .brand-tag .a { color: var(--accent); }
+    .net-card {
+      margin: 8px 14px 12px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(73,214,190,0.18), rgba(73,214,190,0.04));
+      border: 1px solid rgba(73,214,190,0.25);
+    }
+    .net-card .lbl { font-size: 10px; letter-spacing: 1.6px; font-weight: 800; color: var(--accent); }
+    .net-card .amt {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 24px; font-weight: 800; margin-top: 4px;
+    }
+    .net-card .sub { display: flex; gap: 14px; margin-top: 8px; font-size: 11px; color: var(--text-2); }
+    .spark {
+      margin-top: 10px;
+      height: 56px;
+      background:
+        linear-gradient(180deg, rgba(73,214,190,0.35), rgba(73,214,190,0));
+      clip-path: polygon(0% 80%, 8% 70%, 18% 78%, 28% 60%, 38% 65%, 50% 48%, 62% 55%, 72% 38%, 84% 44%, 100% 22%, 100% 100%, 0% 100%);
+    }
+    .stats {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+      margin: 0 14px 10px;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 8px 10px;
+    }
+    .stat .t { font-size: 9px; color: var(--text-2); letter-spacing: 0.8px; text-transform: uppercase; }
+    .stat .v {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 13px; font-weight: 800; margin-top: 2px;
+    }
+    .row-card {
+      margin: 0 14px 8px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .row-card .ic {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+    .row-card .nm { font-size: 12px; font-weight: 600; flex: 1; }
+    .row-card .vl {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 12px; font-weight: 800;
+    }
+    .tabbar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 8px 12px 14px;
+      display: flex; justify-content: space-around;
+      background: rgba(18,20,33,0.92);
+      border-top: 1px solid var(--stroke);
+      font-size: 9px; color: var(--text-3); letter-spacing: 0.5px;
+    }
+    .tabbar .active { color: var(--accent); }
+    .tabbar .item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .tabbar .ico { font-size: 14px; }
+
+    /* Section base */
+    section { padding: 80px 0; }
+    .section-title {
+      font-size: clamp(28px, 3.4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      margin: 0 0 14px;
+    }
+    .section-sub {
+      color: var(--text-2);
+      max-width: 640px;
+      margin: 0 0 36px;
+      font-size: 17px;
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) { .features-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      padding: 22px;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .feature:hover { transform: translateY(-2px); border-color: rgba(73,214,190,0.35); }
+    .feature .icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: rgba(73,214,190,0.12);
+      color: var(--accent);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+    .feature h3 { margin: 0 0 6px; font-size: 17px; font-weight: 700; }
+    .feature p { margin: 0; color: var(--text-2); font-size: 14px; }
+
+    /* Privacy highlight */
+    .privacy {
+      background: linear-gradient(160deg, rgba(73,214,190,0.08), rgba(91,170,255,0.05));
+      border-top: 1px solid var(--stroke);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .privacy-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    }
+    @media (max-width: 900px) { .privacy-grid { grid-template-columns: 1fr; } }
+    .privacy ul { list-style: none; padding: 0; margin: 16px 0 0; }
+    .privacy li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--stroke);
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .privacy li:last-child { border-bottom: none; }
+    .privacy .check {
+      flex: 0 0 22px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(73,214,190,0.16);
+      color: var(--accent);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+    }
+    .privacy strong { display: block; margin-bottom: 2px; font-size: 15px; }
+    .privacy span { color: var(--text-2); font-size: 14px; }
+
+    /* Numbers */
+    .numbers {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) { .numbers { grid-template-columns: 1fr 1fr; } }
+    .num {
+      text-align: center;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+    }
+    .num .v {
+      font-size: 36px; font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), #8AE5FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .num .l { color: var(--text-2); font-size: 13px; margin-top: 4px; }
+
+    /* FAQ */
+    .faq { max-width: 760px; margin: 0 auto; }
+    details {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 10px;
+    }
+    details summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      list-style: none;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::after {
+      content: "+";
+      font-size: 22px; color: var(--accent); font-weight: 400;
+      transition: transform .2s ease;
+    }
+    details[open] summary::after { content: "−"; }
+    details p { color: var(--text-2); font-size: 14px; margin: 10px 0 0; }
+
+    /* CTA */
+    .cta-banner {
+      text-align: center;
+      padding: 60px 24px;
+      background:
+        radial-gradient(closest-side, rgba(73,214,190,0.18), transparent 70%),
+        var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 26px;
+      margin: 60px 0;
+    }
+    .cta-banner h2 { font-size: 32px; margin: 0 0 12px; font-weight: 800; }
+    .cta-banner p { color: var(--text-2); margin: 0 0 22px; font-size: 16px; }
+
+    /* Footer */
+    footer {
+      padding: 40px 0 32px;
+      border-top: 1px solid var(--stroke);
+      color: var(--text-3);
+      font-size: 13px;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 720px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+    .foot-grid h5 { color: var(--text); font-size: 13px; margin: 0 0 10px; letter-spacing: 1px; text-transform: uppercase; }
+    .foot-grid ul { list-style: none; padding: 0; margin: 0; }
+    .foot-grid li { margin-bottom: 8px; }
+    .foot-grid a { color: var(--text-2); }
+    .foot-grid a:hover { color: var(--text); text-decoration: none; }
+    .foot-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 20px; border-top: 1px solid var(--stroke);
+      flex-wrap: wrap; gap: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="dot">AI</span>
+      <span>CTRAI</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#faq">FAQ</a>
+      <a href="support.html">Support</a>
+      <a href="#download" class="nav-cta">Get CTRAI</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow"><span class="pulse"></span> Private by design</span>
+      <h1>Your money, <span class="grad">mapped.</span><br/>No accounts. No tracking.</h1>
+      <p class="lead">CTRAI is a privacy-first personal finance and wealth navigator for iPhone. Track accounts, budgets, goals and insights — all stored locally on your device, never in the cloud.</p>
+      <div class="cta-row">
+        <a href="#download" class="btn btn-primary">Download on the App Store →</a>
+        <a href="#features" class="btn btn-ghost">Explore features</a>
+      </div>
+      <div style="margin-top:22px;color:var(--text-3);font-size:13px;">
+        ★★★★★  &nbsp; iPhone • iOS 16+ • Dark mode
+      </div>
+    </div>
+
+    <div class="phone" aria-hidden="true">
+      <div class="screen">
+        <div class="topbar">
+          <span>9:41</span>
+          <span class="brand-tag">CTR<span class="a">AI</span></span>
+          <span>100%</span>
+        </div>
+        <div class="net-card">
+          <div class="lbl">NET WORTH</div>
+          <div class="amt">$38,261.45</div>
+          <div class="sub"><span>↑ Assets $42.1k</span><span>↓ Liab $3.8k</span></div>
+          <div class="spark"></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="t">Income</div><div class="v">$4.2k</div></div>
+          <div class="stat"><div class="t">Expense</div><div class="v">$2.6k</div></div>
+          <div class="stat"><div class="t">Savings</div><div class="v">38%</div></div>
+        </div>
+        <div class="row-card">
+          <div class="ic">☕</div>
+          <div class="nm">Coffee Lab</div>
+          <div class="vl" style="color:var(--danger);">−$4.80</div>
+        </div>
+        <div class="row-card">
+          <div class="ic">💼</div>
+          <div class="nm">Salary</div>
+          <div class="vl" style="color:var(--success);">+$4,200</div>
+        </div>
+        <div class="row-card">
+          <div class="ic">🛒</div>
+          <div class="nm">FreshMart</div>
+          <div class="vl" style="color:var(--danger);">−$58.20</div>
+        </div>
+        <div class="tabbar">
+          <div class="item active"><div class="ico">▦</div><div>Home</div></div>
+          <div class="item"><div class="ico">≡</div><div>Activity</div></div>
+          <div class="item"><div class="ico">▮</div><div>Reports</div></div>
+          <div class="item"><div class="ico">✦</div><div>Insights</div></div>
+          <div class="item"><div class="ico">⚙</div><div>Settings</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="container">
+    <h2 class="section-title">Everything your money needs.</h2>
+    <p class="section-sub">Built for serious investors who want clarity without compromise — and total control over their data.</p>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="icon">🌐</div>
+        <h3>Live net worth</h3>
+        <p>Assets, liabilities and a six-month wealth trajectory in a single glance. Tap any card to drill into the details.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📊</div>
+        <h3>Interactive charts</h3>
+        <p>Tap-responsive line, donut and bar charts for cash flow, categories and trends — without sacrificing performance.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">💳</div>
+        <h3>Unlimited accounts</h3>
+        <p>Cash, checking, savings, credit cards and brokerage — log every transaction in seconds with receipts and notes.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📷</div>
+        <h3>Receipt capture</h3>
+        <p>Snap receipts and invoices with the in-app camera or pull from your photo library — attach them to any transaction.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🎯</div>
+        <h3>Smart budgets & goals</h3>
+        <p>Monthly budgets with alert thresholds. Long-term savings goals with priority weighting and visual progress rings.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">✦</div>
+        <h3>Financial Health Score</h3>
+        <p>Composite insights from your savings rate, budget adherence, runway and debt-to-income ratio — with personalized tips.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔒</div>
+        <h3>On-device only</h3>
+        <p>No account, no login, no cloud sync. All data lives locally — encrypted at rest by iOS and accessible only by you.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🌍</div>
+        <h3>18 currencies</h3>
+        <p>USD, EUR, GBP, JPY, CNY and more — pick any currency with proper symbols and decimal formatting.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🌙</div>
+        <h3>Designed for iPhone</h3>
+        <p>Native SwiftUI with full dark mode, haptics and privacy blur in the app switcher. Optimized for iOS 16 and later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy" class="privacy">
+  <div class="container privacy-grid">
+    <div>
+      <h2 class="section-title">Privacy isn't a feature. It's the foundation.</h2>
+      <p class="section-sub">CTRAI is built around a single principle: your financial data belongs to you, and only you. Here's exactly what that means in practice.</p>
+    </div>
+    <ul>
+      <li>
+        <span class="check">✓</span>
+        <div>
+          <strong>No account, no login</strong>
+          <span>You install the app and you're in. No emails, no phone numbers, no sign-up forms.</span>
+        </div>
+      </li>
+      <li>
+        <span class="check">✓</span>
+        <div>
+          <strong>No cloud, no servers</strong>
+          <span>Transactions, accounts, budgets and goals live exclusively in the iOS sandbox on your device.</span>
+        </div>
+      </li>
+      <li>
+        <span class="check">✓</span>
+        <div>
+          <strong>No analytics, no ads</strong>
+          <span>Zero third-party trackers. No advertising SDKs. No behavior profiling.</span>
+        </div>
+      </li>
+      <li>
+        <span class="check">✓</span>
+        <div>
+          <strong>Encrypted at rest</strong>
+          <span>Relies on iOS data protection. Backups inherit the same protection when device backups are encrypted.</span>
+        </div>
+      </li>
+      <li>
+        <span class="check">✓</span>
+        <div>
+          <strong>You control export & delete</strong>
+          <span>One-tap reset clears everything. No data ever leaves the device unless you explicitly export it.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="numbers">
+      <div class="num"><div class="v">0</div><div class="l">accounts required</div></div>
+      <div class="num"><div class="v">0</div><div class="l">trackers in the app</div></div>
+      <div class="num"><div class="v">18</div><div class="l">currencies supported</div></div>
+      <div class="num"><div class="v">100%</div><div class="l">on-device storage</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <h2 class="section-title">Frequently asked questions</h2>
+    <p class="section-sub">Quick clarity on how CTRAI handles your data and money.</p>
+    <div class="faq">
+      <details>
+        <summary>Do I need to create an account?</summary>
+        <p>No. CTRAI has no account system. Install the app and start tracking immediately — there is nothing to register for.</p>
+      </details>
+      <details>
+        <summary>Where is my financial data stored?</summary>
+        <p>All transactions, accounts, budgets and goals are stored locally in the app's private sandbox on your iPhone. They never leave your device unless you explicitly export them.</p>
+      </details>
+      <details>
+        <summary>Does CTRAI connect to my bank?</summary>
+        <p>No. CTRAI does not connect to bank accounts, brokerage APIs or any third-party financial services. Every entry is logged by you, by hand or by receipt photo.</p>
+      </details>
+      <details>
+        <summary>Can I back up my data?</summary>
+        <p>Your data is included in your standard iOS device backups (iCloud or iTunes/Finder), protected by the same encryption as the rest of your device. CTRAI itself does not maintain its own cloud backup.</p>
+      </details>
+      <details>
+        <summary>How do I delete my data?</summary>
+        <p>Open Settings → Data → Reset to clear all CTRAI data. Uninstalling the app also removes everything stored by CTRAI from the device.</p>
+      </details>
+      <details>
+        <summary>Which iOS versions work with CTRAI?</summary>
+        <p>CTRAI requires iOS 16 or later and runs on iPhone in both light and dark appearance, with a fully designed dark experience out of the box.</p>
+      </details>
+      <details>
+        <summary>How do I get support?</summary>
+        <p>Email us at <a href="mailto:Mefepzavap@icloud.com">Mefepzavap@icloud.com</a> — see the <a href="support.html">Support</a> page for details.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Disciplined investing, on your iPhone.</h2>
+      <p>CTRAI is the cockpit for compounding better decisions — privacy-first, beautifully designed, ready when you are.</p>
+      <a href="#" class="btn btn-primary">Download on the App Store →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="brand"><span class="dot">AI</span><span>CTRAI</span></a>
+        <p style="color:var(--text-2); margin: 14px 0 0; font-size: 14px; max-width: 360px;">
+          A privacy-first personal finance and wealth navigator for iPhone. All data is stored on your device.
+        </p>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="support.html">Support</a></li>
+          <li><a href="mailto:Mefepzavap@icloud.com">Mefepzavap@icloud.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> CTRAI. All rights reserved.</span>
+      <span>Made for iPhone · iOS 16+</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

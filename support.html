@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0B10" />
+  <title>Support — CTRAI</title>
+  <meta name="description" content="Get help with CTRAI. Frequently asked questions, troubleshooting and direct support channel." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230A0B10'/><text x='32' y='40' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-size='18' font-weight='800' fill='%2349D6BE'>CTRAI</text></svg>" />
+  <style>
+    :root {
+      --bg:#0A0B10; --surface:#121421; --surface-2:#181A2B;
+      --stroke:rgba(255,255,255,0.08);
+      --text:rgba(255,255,255,0.96); --text-2:rgba(255,255,255,0.66); --text-3:rgba(255,255,255,0.40);
+      --accent:#49D6BE; --accent-deep:#2A9C8A;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      -webkit-font-smoothing: antialiased; line-height: 1.65;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(180%) blur(18px);
+      -webkit-backdrop-filter: saturate(180%) blur(18px);
+      background: rgba(10,11,16,0.72);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 2.5px; font-size: 14px; }
+    .brand .dot {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #00120F; font-size: 10px; font-weight: 800;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: var(--text-2); font-size: 14px; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-cta {
+      padding: 8px 14px; border-radius: 999px;
+      background: var(--accent); color: #00120F !important;
+      font-weight: 700; font-size: 13px;
+    }
+    @media (max-width: 720px) { .nav-links a:not(.cta) { display: none; } }
+
+    header {
+      padding: 72px 0 32px;
+      text-align: center;
+    }
+    header .crumb {
+      color: var(--accent); font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+    h1 {
+      font-size: clamp(34px, 5vw, 48px);
+      letter-spacing: -0.02em;
+      margin: 14px 0 14px; font-weight: 800;
+    }
+    .lead { color: var(--text-2); font-size: 17px; max-width: 620px; margin: 0 auto; }
+
+    .contact-card {
+      margin: 36px auto 0;
+      max-width: 640px;
+      background:
+        radial-gradient(closest-side, rgba(73,214,190,0.18), transparent 70%),
+        var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+    }
+    .contact-card .ic {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: rgba(73,214,190,0.14); color: var(--accent);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 12px;
+    }
+    .contact-card h3 { margin: 0 0 6px; font-size: 18px; }
+    .contact-card p { color: var(--text-2); margin: 0 0 16px; font-size: 14px; }
+    .email-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 12px;
+      background: var(--accent); color: #00120F;
+      font-weight: 700; font-size: 15px;
+    }
+    .email-btn:hover { text-decoration: none; transform: translateY(-1px); }
+
+    section { padding: 56px 0 16px; }
+    h2 {
+      font-size: 24px; font-weight: 800; margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    }
+    @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .card h3 { margin: 0 0 10px; font-size: 16px; }
+    .card p, .card li { color: var(--text-2); font-size: 14px; }
+    .card ul { padding-left: 18px; margin: 6px 0 0; }
+    .card li { margin-bottom: 6px; }
+
+    .faq { max-width: 760px; margin: 0 auto; }
+    details {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+    }
+    details summary {
+      cursor: pointer; font-weight: 600; font-size: 15px;
+      list-style: none;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::after {
+      content: "+"; font-size: 22px; color: var(--accent); font-weight: 400;
+    }
+    details[open] summary::after { content: "−"; }
+    details p { color: var(--text-2); font-size: 14px; margin: 10px 0 0; }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      padding: 24px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block; font-size: 12px; color: var(--text-2);
+      margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--stroke);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .field textarea { min-height: 120px; resize: vertical; }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .submit-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 12px;
+      background: var(--accent); color: #00120F;
+      font-weight: 700; font-size: 15px; border: none; cursor: pointer;
+    }
+    .submit-btn:hover { transform: translateY(-1px); }
+    .form-note {
+      color: var(--text-3); font-size: 12px; margin-top: 10px;
+    }
+
+    footer {
+      padding: 36px 0 32px;
+      border-top: 1px solid var(--stroke);
+      color: var(--text-3); font-size: 13px;
+      margin-top: 60px;
+    }
+    .foot-row {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .foot-row .links a { color: var(--text-2); margin-left: 18px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="dot">AI</span>
+      <span>CTRAI</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#privacy">Privacy</a>
+      <a href="support.html">Support</a>
+      <a href="index.html#download" class="nav-cta cta">Get CTRAI</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="container">
+    <span class="crumb">Support</span>
+    <h1>We're here to help.</h1>
+    <p class="lead">Find answers to common questions or reach our team directly. CTRAI support is handled by humans who actually build the app.</p>
+    <div class="contact-card">
+      <div class="ic">✉</div>
+      <h3>Email support</h3>
+      <p>For bug reports, account-less feedback, feature requests, and general questions.</p>
+      <a class="email-btn" href="mailto:Mefepzavap@icloud.com">Mefepzavap@icloud.com</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>Quick troubleshooting</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Where is my data stored?</h3>
+        <p>Everything you enter lives on your iPhone, in the app's private sandbox. CTRAI does not upload or sync anything to a server, so there is nothing to "log in" to.</p>
+      </div>
+      <div class="card">
+        <h3>How do I back up my data?</h3>
+        <p>Your data is included in your normal iOS device backups (iCloud or computer). You can disable backups for CTRAI from iOS Settings if you prefer to keep it device-only.</p>
+      </div>
+      <div class="card">
+        <h3>How do I clear all my data?</h3>
+        <p>Open CTRAI → Settings → Data → Reset to Sample Data, or simply uninstall the app. Either path removes everything CTRAI has on the device.</p>
+      </div>
+      <div class="card">
+        <h3>Camera or photos not working?</h3>
+        <p>Open iOS Settings → CTRAI and confirm Camera and Photos permissions are enabled. If a permission was denied, the in-app feature will guide you back to the toggle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      <details>
+        <summary>Which devices and iOS versions are supported?</summary>
+        <p>CTRAI runs on iPhone with iOS 16 or later. We test on the latest two major iOS releases.</p>
+      </details>
+      <details>
+        <summary>Do I need an account to use CTRAI?</summary>
+        <p>No. CTRAI is fully usable without any account, login, or email. Install the app and you're in.</p>
+      </details>
+      <details>
+        <summary>Does CTRAI connect to my bank or broker?</summary>
+        <p>No. CTRAI does not connect to any financial institution. You log transactions manually or by snapping a receipt.</p>
+      </details>
+      <details>
+        <summary>Why is my currency symbol wrong?</summary>
+        <p>Open Settings → Currency and pick the right currency. The list includes the symbol used by that currency (e.g. ¥, €, £, $, $).</p>
+      </details>
+      <details>
+        <summary>How do I report a bug?</summary>
+        <p>Email <a href="mailto:Mefepzavap@icloud.com">Mefepzavap@icloud.com</a> with your iOS version, iPhone model, and a short description. Screenshots help us a lot.</p>
+      </details>
+      <details>
+        <summary>Can I request a feature?</summary>
+        <p>Absolutely. Send feature requests to <a href="mailto:Mefepzavap@icloud.com">Mefepzavap@icloud.com</a>. We read every message.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Send us a message</h2>
+    <form class="form-card" onsubmit="event.preventDefault(); window.location.href='mailto:Mefepzavap@icloud.com?subject=' + encodeURIComponent(document.getElementById('subject').value) + '&body=' + encodeURIComponent(document.getElementById('message').value + '\n\n— ' + document.getElementById('name').value + ' (' + document.getElementById('email').value + ')');">
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" type="text" placeholder="e.g. Alex Johnson" required />
+      </div>
+      <div class="field">
+        <label for="email">Your email</label>
+        <input id="email" type="email" placeholder="you@example.com" required />
+      </div>
+      <div class="field">
+        <label for="subject">Subject</label>
+        <input id="subject" type="text" placeholder="e.g. Bug report, Feature request" required />
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Tell us what's on your mind..." required></textarea>
+      </div>
+      <button class="submit-btn" type="submit">Open in mail app →</button>
+      <div class="form-note">Submitting will open your default mail app pre-filled with your message. We respond from Mefepzavap@icloud.com.</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="container foot-row">
+    <span>© <span id="year"></span> CTRAI. All rights reserved.</span>
+    <span class="links">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
